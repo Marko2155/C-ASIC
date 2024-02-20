@@ -1,4 +1,5 @@
 checkerr
 run
+makeUnix
 *.cb
 *.bsharp
