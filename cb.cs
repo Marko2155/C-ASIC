@@ -254,6 +254,7 @@ namespace BASICsharp {
 			string[] arguments = Environment.GetCommandLineArgs();
 			if (arguments.Length == 1) {
 				Console.WriteLine("cb: No .cb program specified");
+				Console.WriteLine("cb: If you want to run the CLI, run 'cb cli' instead of just 'cb'.");
 		} else {
 			if (arguments[1] == "cli") {
 				CLI();
