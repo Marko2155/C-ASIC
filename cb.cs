@@ -8,11 +8,13 @@ namespace BASICsharp {
     public class BASICsharp {
             static double mathresult = 0;
 			static string[] memory = {"", "", "", "", "", "", "", "", "", ""};
+			static List<string> commands_storage = new List<string>();
 			static List<string> commands = new List<string>();
             static bool done = false;
             static bool fileopened = false;
 			static string inputresult = "";
             static string openfile = "";
+			static bool verboseMode = false;
 		static double EvaluateExpression(string expression)
     	{
         	char[] separators = { '+', '-', '*', '/' };
@@ -43,7 +45,8 @@ namespace BASICsharp {
 
 	static void RunCommand(string[] commands, int linenum) {
 								foreach (string line in commands) {
-							if (line.StartsWith("input")) {
+									try {
+																if (line.StartsWith("input")) {
 								if (line.Length > 6) {
 									if (line.Substring(6).StartsWith("$")) {
 										int index = int.Parse(line.Substring(7, 2));
@@ -95,19 +98,29 @@ namespace BASICsharp {
 								} else if (line.Length >= 4 && line.Substring(4,1) == "=") {
 									int index = int.Parse(line.Substring(1,2));
 									string value = line.Substring(4);
-									if (value == "!inputresult!") {
-										memory[index] = Convert.ToString(inputresult);
-									} else if (value == "!mathresult!") {
-										memory[index] = Convert.ToString(mathresult);
-									} else {
-										memory[index] = Convert.ToString(value);
-									}
+									memory[index] = Convert.ToString(value);
 								}
+							} else if (line.StartsWith("::")) {
+								string command = line.Substring(2);
+								commands_storage.Add(command);
+							} else if (line == "run_store") {
+								int linenum_store = 0;
+								RunCommand(commands_storage.ToArray(), linenum_store);
+							} else if (line == "clear_store") {
+								commands_storage.Clear();
 							} else {
 								Console.WriteLine("Error: command on line #" + linenum.ToString() + " not recognized or is incomplete (2). Halting.");
 								break;
 							}
 							linenum += 1;
+									} catch (Exception e) {
+										if (verboseMode == true) {
+											Console.WriteLine(e);
+										} else {
+											Console.WriteLine("Error: internal exception occurred (3). Halting.");
+										}
+										break;
+									}
 						}
 	}
 	static void CLI() {
@@ -133,6 +146,7 @@ namespace BASICsharp {
                     } else {
                         openfile = name;
 						commands.Clear();
+						commands_storage.Clear();
                         File.Create(@"./" + name.ToUpper() + ".cb").Dispose();
                         fileopened = true;
                     }
@@ -222,6 +236,7 @@ namespace BASICsharp {
                         Console.WriteLine("argument 'FILE' must not be empty");
                     } else {
 						commands.Clear();
+						commands_storage.Clear();
 						if (File.Exists("./" + name + ".cb")) {
                         	openfile = name;
 							foreach (string line in File.ReadAllLines("./" + name + ".cb")) {
@@ -255,11 +270,21 @@ namespace BASICsharp {
 			if (arguments.Length == 1) {
 				Console.WriteLine("cb: No .cb program specified");
 				Console.WriteLine("cb: If you want to run the CLI, run 'cb cli' instead of just 'cb'.");
+				Console.WriteLine("cb: To launch a program in verbose mode, add -v after the file name, like this: 'cb test.cb -v'");
 		} else {
 			if (arguments[1] == "cli") {
 				CLI();
 			} else {
 			if (File.Exists(arguments[1])) {
+				try {
+					if (arguments[2] == "-v") {
+						verboseMode = true;
+					} else {
+						Console.WriteLine("Error: Unknown argument (6). ");
+					}
+				} catch (Exception e) {
+					
+				}
 				if (arguments[1].EndsWith(".cb")) {
 					string[] file = File.ReadAllLines(arguments[1]);
 					int linenum = 0;
