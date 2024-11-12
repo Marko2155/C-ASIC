@@ -21,3 +21,4 @@ Install Mono and Git by typing ```sudo apt install mono-complete git```. Clone t
 Install Mono and Git by typing ```brew install mono``` and ```brew install git```. Clone the repo using ```git clone https://github.com/Marko2155/C-ASIC.git```. Now, ```cd``` into the C#ASIC folder. Type ```mcs cb.cs```. Type ```mkbundle -o cb --cross default cb.exe```. If mkbundle isn't installed, find out how to install it.
 
 # Documentation
+https://github.com/Marko2155/C-ASIC/tree/rewrite/docs
