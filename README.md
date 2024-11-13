@@ -1,6 +1,6 @@
 # ALERT!
 A complete rewrite of C#ASIC is happening (will update once complete), head over to the rewrite branch for any new changes, eventually i'll just rename main to old and rewrite to main.
-It is still based on Mono, so you won't need to do any installing to compile the rewrite too. Wiki for the rewrite will also be different, as it has a different system of error codes (now ERR codes) and a different language system, for example: In the normal C#ASIC: ```echo Hello World!```. In the rewrite of C#ASIc: ```PNT "Hello World!"```
+It is also based on .NET now, so it will not have any instructions to install .NET, as Microsoft already has instructions. Wiki for the rewrite will also be different, as it has a different system of error codes (now ERR codes) and a different language system, for example: In the normal C#ASIC: ```echo Hello World!```. In the rewrite of C#ASIC: ```PNT "Hello World!"```
 See ya in the rewrite!
 
 # C#ASIC
